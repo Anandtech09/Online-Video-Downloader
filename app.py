@@ -106,14 +106,16 @@ with tab_single:
             label_visibility="collapsed"
         )
 
+        def clear_single_input():
+            st.session_state["url_main_input"] = ""
+            st.session_state["inspected_media"] = None
+            st.session_state["single_dl_result"] = None
+
         col_act1, col_act2 = st.columns([1, 1])
         with col_act1:
             btn_inspect = st.button("🔍 Check Media & Qualities", type="primary", use_container_width=True)
         with col_act2:
-            if st.button("Clear Input", use_container_width=True):
-                st.session_state["inspected_media"] = None
-                st.session_state["single_dl_result"] = None
-                st.rerun()
+            st.button("Clear Input", on_click=clear_single_input, use_container_width=True)
 
     # Process Inspection
     if btn_inspect and single_url.strip():
@@ -258,22 +260,15 @@ with tab_single:
             - 🛡️ **Integrity:** `100% verified (500MB+ safe, zero missing data)`
             """)
 
-            # Direct HTTP browser download (triggers default Downloads folder on Mobile/Laptop)
-            direct_link = f"app/static/downloads/{subfolder}/{f_name}" if subfolder else f"app/static/downloads/{f_name}"
-            st.markdown(f"""
-            <a href="{direct_link}" download="{f_name}" class="direct-device-btn">
-                💾 Save Directly to Device Downloads Folder
-            </a>
-            """, unsafe_allow_html=True)
-
-            # Streamlit download button backup
+            # Single reliable download button
             if os.path.exists(f_path):
                 with open(f_path, "rb") as fl:
                     st.download_button(
-                        label=f"📥 Download via Browser ({f_size})",
+                        label=f"💾 Download to Device ({f_size})",
                         data=fl,
                         file_name=f_name,
                         mime=f_mime,
+                        type="primary",
                         use_container_width=True
                     )
 
@@ -405,19 +400,13 @@ with tab_batch:
                 z_sz = format_bytes(os.path.getsize(zip_target))
                 z_base = os.path.basename(zip_target)
 
-                # Direct device download link
-                st.markdown(f"""
-                <a href="app/static/downloads/{z_base}" download="{z_base}" class="direct-device-btn" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
-                    📦 Download Complete ZIP Package ({z_sz}) Directly to Device
-                </a>
-                """, unsafe_allow_html=True)
-
                 with open(zip_target, "rb") as zf:
                     st.download_button(
-                        label=f"💾 Streamlit Download ZIP ({z_sz})",
+                        label=f"📦 Download Complete ZIP Package ({z_sz})",
                         data=zf,
                         file_name=z_base,
                         mime="application/zip",
+                        type="primary",
                         use_container_width=True
                     )
 

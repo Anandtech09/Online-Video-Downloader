@@ -82,6 +82,12 @@ def inspect_media_url(url: str) -> Dict:
         'nocheckcertificate': True,
         'skip_download': True,
         'ffmpeg_location': ffmpeg_exe,
+        'extractor_args': {
+            'youtube': {
+                'player_client': ['android', 'android_creator'],
+                'player_skip': ['webpage', 'configs']
+            }
+        },
         'http_headers': headers
     }
 
@@ -330,8 +336,16 @@ def download_media_file(
         'continuedl': True,
         'quiet': True,
         'no_warnings': True,
+        'extractor_args': {
+            'youtube': {
+                'player_client': ['android', 'android_creator'],
+                'player_skip': ['webpage', 'configs']
+            }
+        },
         'http_headers': {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
+            'Accept': '*/*',
+            'Accept-Language': 'en-US,en;q=0.9',
         }
     }
 

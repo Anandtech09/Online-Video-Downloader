@@ -213,6 +213,16 @@ div.stButton > button:hover {
     transform: translateY(-1px);
 }
 
+/* Hide Streamlit 'Press Enter to apply' instruction */
+div[data-testid="InputInstructions"],
+.stTextInput div[data-testid="InputInstructions"],
+[data-testid="stTextInputInstructions"],
+.stTextInput small,
+div[data-testid="InputInstructions"] > span,
+small:has(span) {
+    display: none !important;
+}
+
 /* Inputs styling */
 div.stTextInput > div > div > input, div.stTextArea textarea {
     border-radius: 12px !important;
